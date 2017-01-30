@@ -11,6 +11,7 @@ include_once('models/repositories/CommandeRepository.php');
 include_once('models/repositories/ClientRepository.php');
 include_once('models/repositories/UserRepository.php');
 
+
 //On récupère un objet PDO une fois pour toutes pour dialoguer avec la bdd
 $pdo = PDOFactory::getMysqlConnection();
 
@@ -30,7 +31,7 @@ switch ($action) {
 	case "verifLogin":
 		$userRepo = new UserRepository();
 		$user = $userRepo->getUser($pdo, $_POST['login'], $_POST['pwd']);
-		
+
 		if($user) {
 			$_SESSION['login'] = $user->getLogin();
 			$_SESSION['nom'] = $user->getNom();
@@ -58,8 +59,16 @@ switch ($action) {
 		$vueAAfficher = "views/listClient.php";
 		break;
 
+
+	case "ListCommande":
+		//Afficher liste des commandes
+		$commandeRepo = new CommandeRepository();
+		$listeCommande = $commandeRepo->getAll($pdo);
+		$vueAAfficher = "views/listCommande.php";
+		break;
+
 	//Affiche le formulaire d'ajout d'un client
-	case "formAddClient": 
+	case "formAddClient":
 		//On prépare la vue à afficher
 		$vueAAfficher = "views/formAddClient.php";
 		break;
@@ -138,19 +147,3 @@ switch ($action) {
 }
 
 include_once("layouts/layout.php");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
